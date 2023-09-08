@@ -1,5 +1,8 @@
 <template>
   <div class="h-screen grid place-items-center">
+    <NuxtLink to="/taskList">
+      To Task List
+    </NuxtLink>
     <div>
       <h1 class="text-xl font-bold text-center">Welcome to Task Planner</h1>
     <p class="text-center">Get things done with your day, a list that refreshes everyday.</p>

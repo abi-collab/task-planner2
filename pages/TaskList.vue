@@ -1,80 +1,54 @@
 <!-- Please remove this file from your project -->
 <template>
-    <div class="h-screen grid place-items-center">
+    <div class="p-12">
    <div>
-    List of Task
-    <div v-for="i in tasks">
-      <TaskListItem :task="i" />
+    <div class="flex justify-between">
+        <div>Task Planner</div>
+        <div class="flex justi hover:cursor-pointerfy-between gap-4">
+            <div class="border" @click="filter_value = ''">All</div>
+            <div class="border hover:cursor-pointer" @click="filter_value = 'important'">Important</div>
+            <div class="border hover:cursor-pointer" @click="filter_value = 'done'">Done</div>
+        </div>
     </div>
-
-    
+    <div>
+        <input type="text" v-model="search_task" @keyup="fetchTasks()" class="border w-full my-2">
+    </div>
+    <div v-for="i in AllTasks">
+      <TaskListItem :task="i" @function-to-emit="fetchTasks" />
+    </div>
   </div>
   <TaskInputText />
+  <br>
+  <br>
+  <DropdownUsers />
       </div>
-  
 </template>
 
 <script>
 import TaskInputText from '../components/TaskInputText.vue';
-
+import DropdownUsers from '../components/DropdownUsers.vue';
+import axios from 'axios';
 export default {
     name: 'TaskList',
+    components: { TaskInputText, DropdownUsers },
     data() {
         return {
-            tasks: [
-                {
-                    id: 1,
-                    text: "Buy groceries",
-                    done: false,
-                },
-                {
-                    id: 2,
-                    text: "Finish work project",
-                    done: false,
-                },
-                {
-                    id: 3,
-                    text: "Go for a run",
-                    done: false,
-                },
-                {
-                    id: 4,
-                    text: "Read a book",
-                    done: false,
-                },
-                {
-                    id: 5,
-                    text: "Call mom",
-                    done: false,
-                },
-                {
-                    id: 6,
-                    text: "Pay bills",
-                    done: false,
-                },
-                {
-                    id: 7,
-                    text: "Clean the house",
-                    done: false,
-                },
-                {
-                    id: 8,
-                    text: "Write in journal",
-                    done: false,
-                },
-                {
-                    id: 9,
-                    text: "Learn Vue.js",
-                    done: false,
-                },
-                {
-                    id: 10,
-                    text: "Watch a movie",
-                    done: false,
-                }
-            ]
+            AllTasks: [],
+            filter_value: '',
+            search_task:''
         };
     },
-    components: { TaskInputText }
+    created() {
+        this.fetchTasks();
+    },
+    methods: {
+    async fetchTasks() {
+      axios.get(`https://63906a8d65ff41831112cdd1.mockapi.io/api/v1/tasks?search=${this.search_task}`).then((res) => {
+        this.AllTasks = res.data;
+        console.log(res)
+      })
+    }
+   
+  }
 }
 </script>
