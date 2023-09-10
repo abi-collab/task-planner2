@@ -1,13 +1,13 @@
 <!-- Please remove this file from your project -->
 <template>
-    <div class="p-12">
+    <div class="p-12 w-3/4 mx-auto">
    <div>
     <div class="flex justify-between">
         <div>Task Planner</div>
-        <div class="flex justi hover:cursor-pointerfy-between gap-4 border text-gray-500">
-            <div class="border" @click="filter_value = ''">All</div>
-            <div class="border hover:cursor-pointer" @click="filter_value = 'important'">Important</div>
-            <div class="border hover:cursor-pointer" @click="filter_value = 'done'">Done</div>
+        <div class="flex justi hover:cursor-pointerfy-between gap-6 text-gray-500 text-sm">
+            <div class="" @click="filter_value = ''">All</div>
+            <div class="hover:cursor-pointer" @click="filter_value = 'important'">{{ all_important }} Important</div>
+            <div class="hover:cursor-pointer" @click="filter_value = 'done'">{{ all_done }} Done</div>
         </div>
     </div>
     <div>
@@ -24,18 +24,16 @@
       <TaskListItem :task="i" @function-to-emit="fetchTasks" />
     </div>
   </div>
-  <TaskInputText />
+  <!-- <TaskInputText />
   <br>
   <br>
-  <DropdownUsers />
-  {{ task_toltal }} - {{ all_important }} - {{ all_done }}
+  <DropdownUsers /> -->
       </div>
 </template>
 
 <script>
 import TaskInputText from '../components/TaskInputText.vue';
 import DropdownUsers from '../components/DropdownUsers.vue';
-import axios from 'axios'
 export default {
     name: 'TaskList',
     components: { TaskInputText, DropdownUsers },
@@ -49,25 +47,27 @@ export default {
     created() {
         this.fetchTasks();
         this.$store.dispatch('task/fetchTasks');
+        this.$store.dispatch('users/fetchUsers');
     },
     methods: {
     async fetchTasks() {
-      axios.get(`https://63906a8d65ff41831112cdd1.mockapi.io/api/v1/tasks?search=${this.search_task}`).then((res) => {
-        this.AllTasks = res.data;
-        console.log(res)
-      })
+      // axios.get(`https://63906a8d65ff41831112cdd1.mockapi.io/api/v1/tasks?search=${this.search_task}`).then((res) => {
+      //   this.AllTasks = res.data;
+      //   console.log(res)
+      // })
+      this.$store.dispatch('task/fetchTasks');
     }
   },
   computed: {
     task_toltal() {
-      return this.AllTasks.length;
+      return this.$store.state.task.AllTasks.length;
     },
     all_important() {
-      let important = this.AllTasks.filter((i) => i.is_important == true );
+      let important = this.$store.state.task.AllTasks.filter((i) => i.is_important == true );
       return important.length;
     },
     all_done() {
-      let important = this.AllTasks.filter((i) => i.is_done == true );
+      let important = this.$store.state.task.AllTasks.filter((i) => i.is_done == true );
       return important.length;
     }
   }
