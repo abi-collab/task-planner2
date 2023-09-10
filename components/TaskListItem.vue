@@ -1,5 +1,5 @@
 <template>
-  <div class="border w-full">
+  <div class="border w-full rounded-md my-4 shadow-md">
    <div class="w-fullrounded-md p-2 flex justify-between"> 
     <div class="grid place-items-center">
          <div class="flex justify-start gap-3">
@@ -9,7 +9,7 @@
               <font-awesome-icon icon="fa-solid fa-circle" class="text-gray-300 hover:cursor-pointer hover:text-gray-500" v-else @click="mark_as_done(task)"/>
             </div> 
           </div>
-          <span :class="task.is_done ? 'line-through' : ''"> {{ task.title }}</span>
+          <span :class="task.is_done ? 'line-through text-gray-400 capitalize' : 'text-gray-600'" class="text-xs"> {{ task.title }}</span>
         </div>
       </div>
       <div>
@@ -42,6 +42,8 @@ export default {
     task: Object,
   },
   methods: {
+    //////////////////////////////// I just directly call the axios request here, just for the sake of functionality.
+    //////////////////////////////// I can make this better, just don't have enough time, due of set close deadline.
     async deleteTask(task) {
       axios.delete(`https://63906a8d65ff41831112cdd1.mockapi.io/api/v1/tasks/${task.id}`).then((res) => {
         console.log('deleting task', res);
