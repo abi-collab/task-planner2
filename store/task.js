@@ -31,3 +31,8 @@ export const mutations = {
     state.user_assign_for_task = user;
   }
 }
+
+export const getters = {
+    getModuleData: (state) => state.AllTasks
+
+};
